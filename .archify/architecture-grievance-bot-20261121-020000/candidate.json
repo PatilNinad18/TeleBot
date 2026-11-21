@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Grievance Bot Architecture",
+    "output": ".archify/architecture-grievance-bot-20261121-020000/grievance-bot.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/aaryyang/Grievance-Bot",
+      "revision": "627d36acdcb82333e11de139fdf68684e658f5ad"
+    }
+  },
+  "components": [
+    {
+      "id": "telegram",
+      "type": "external",
+      "label": "Telegram",
+      "sublabel": "Citizen sends /log",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        155,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 358,
+          "end_line": 371
+        },
+        {
+          "path": "main.py",
+          "line": 405,
+          "end_line": 416
+        }
+      ]
+    },
+    {
+      "id": "bot",
+      "type": "backend",
+      "label": "aiogram Bot",
+      "sublabel": "Validates, saves, and replies",
+      "pos": [
+        385,
+        190
+      ],
+      "size": [
+        176,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 358,
+          "end_line": 416
+        }
+      ]
+    },
+    {
+      "id": "rules",
+      "type": "backend",
+      "label": "Classifier",
+      "sublabel": "Keyword scoring and urgency",
+      "pos": [
+        740,
+        190
+      ],
+      "size": [
+        185,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 256,
+          "end_line": 339
+        }
+      ]
+    },
+    {
+      "id": "hf",
+      "type": "cloud",
+      "label": "Hugging Face",
+      "sublabel": "BART zero-shot inference",
+      "pos": [
+        740,
+        385
+      ],
+      "size": [
+        185,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 303,
+          "end_line": 323
+        }
+      ]
+    },
+    {
+      "id": "mongo",
+      "type": "database",
+      "label": "MongoDB",
+      "sublabel": "Complaints, feedback, counters",
+      "pos": [
+        385,
+        385
+      ],
+      "size": [
+        176,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 650,
+          "end_line": 659
+        }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI",
+      "sublabel": "Dashboard API and SSE",
+      "pos": [
+        385,
+        580
+      ],
+      "size": [
+        176,
+        70
+      ],
+      "sources": [
+        {
+          "path": "main.py",
+          "line": 524,
+          "end_line": 551
+        },
+        {
+          "path": "main.py",
+          "line": 615,
+          "end_line": 635
+        }
+      ]
+    },
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "Web Dashboard",
+      "sublabel": "Complaint list and charts",
+      "pos": [
+        40,
+        580
+      ],
+      "size": [
+        155,
+        70
+      ],
+      "sources": [
+        {
+          "path": "templates/dashboard.html",
+          "line": 728,
+          "end_line": 755
+        },
+        {
+          "path": "templates/dashboard.html",
+          "line": 925,
+          "end_line": 929
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "telegram-bot",
+      "from": "telegram",
+      "to": "bot",
+      "label": "Long polls and replies"
+    },
+    {
+      "id": "bot-rules",
+      "from": "bot",
+      "to": "rules",
+      "label": "Classifies text"
+    },
+    {
+      "id": "rules-hf",
+      "from": "rules",
+      "to": "hf",
+      "label": "Zero score + HF token"
+    },
+    {
+      "id": "bot-mongo",
+      "from": "bot",
+      "to": "mongo",
+      "label": "Inserts complaint"
+    },
+    {
+      "id": "api-mongo",
+      "from": "api",
+      "to": "mongo",
+      "label": "Queries records"
+    },
+    {
+      "id": "api-browser",
+      "from": "api",
+      "to": "browser",
+      "label": "HTTP and SSE"
+    }
+  ],
+  "cards": [
+    {
+      "title": "Real-time updates",
+      "dot": "cyan",
+      "items": [
+        "After inserting a complaint, the bot queues an event. FastAPI streams the event and the browser fetches fresh data."
+      ]
+    },
+    {
+      "title": "One Python process",
+      "dot": "emerald",
+      "items": [
+        "main.py starts aiogram polling and the Uvicorn web server on one asyncio event loop."
+      ]
+    }
+  ]
+}

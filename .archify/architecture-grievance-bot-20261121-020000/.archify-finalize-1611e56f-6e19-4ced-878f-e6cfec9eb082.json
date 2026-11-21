@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "running",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-20T20:29:19.081Z",
+  "specification": {
+    "path": "S:\\FullStack\\TeleBot\\.archify\\architecture-grievance-bot-20261121-020000\\candidate.json",
+    "sha256": "e162ff65a6ed99b15fda12fc40cab0ca6a5dceae3c7e1980898fa9a407386197",
+    "bytes": 4395
+  },
+  "artifact": {
+    "path": "S:\\FullStack\\TeleBot\\.archify\\architecture-grievance-bot-20261121-020000\\grievance-bot.html"
+  },
+  "stages": {},
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "S:\\FullStack\\TeleBot\\.archify\\architecture-grievance-bot-20261121-020000\\grievance-bot.finalize.json",
+    "summaryReceipt": "S:\\FullStack\\TeleBot\\.archify\\architecture-grievance-bot-20261121-020000\\grievance-bot.finalize-summary.json"
+  },
+  "visualReview": "not-requested"
+}
